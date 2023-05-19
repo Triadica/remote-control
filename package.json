@@ -1,0 +1,17 @@
+{
+  "name": "@triadica/remote-control",
+  "version": "0.1.0",
+  "description": "Touch Control via WebSocket",
+  "main": "./server.mjs",
+  "repository": "git@github.com:Triadica/remote-control.git",
+  "author": "tiye <jiyinyiyong@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "@triadica/touch-control": "^0.0.3",
+    "@types/ws": "^8.5.4",
+    "vite": "^4.3.8"
+  },
+  "dependencies": {
+    "ws": "^8.13.0"
+  }
+}
