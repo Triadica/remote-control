@@ -48,10 +48,26 @@ let showData = (
   }
 };
 
+let allZero = (xs: number[]): boolean => {
+  for (let idx = 0; idx < xs.length; idx++) {
+    if (xs[idx] !== 0) {
+      return false;
+    }
+  }
+  return true;
+};
 let main = () => {
   renderControl();
   startControlLoop(10, (elapsed, states, delta) => {
     if (connected) {
+      if (
+        allZero(delta.leftMove) &&
+        allZero(delta.rightMove) &&
+        allZero(states.leftMove) &&
+        allZero(states.rightMove)
+      ) {
+        return;
+      }
       ws.send(
         JSON.stringify({
           action: "control",

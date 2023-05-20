@@ -2,9 +2,13 @@
 
 import { WebSocketServer } from "ws";
 
-const wss = new WebSocketServer({ port: 6200, host: "0.0.0.0" });
+let port = parseInt(process.env.PORT || "6200");
+
+const wss = new WebSocketServer({ port, host: "0.0.0.0" });
 
 wss.on("connection", function connection(ws) {
+  console.log(`new connection. (${wss.clients.size})`);
+
   ws.on("error", console.error);
 
   ws.on("message", (data) => {
@@ -13,6 +17,7 @@ wss.on("connection", function connection(ws) {
     if (op.action === "sender") {
       // mark client as sender
       ws.controlSender = true;
+      console.log("sender declared");
     } else if (op.action === "control") {
       // console.log("control clients:", wss.clients.size);
       wss.clients.forEach((client) => {
@@ -24,6 +29,10 @@ wss.on("connection", function connection(ws) {
       console.warn("unknown data:", op.action);
     }
   });
+
+  ws.on("close", () => {
+    console.log(`connection closed. (${wss.clients.size})`);
+  });
 });
 
-console.log("started at 6200");
+console.log("Started at 6200");
