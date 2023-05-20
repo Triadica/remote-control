@@ -1,10 +1,16 @@
+import queryString from "query-string";
 import {
   type ControlStates,
   renderControl,
   startControlLoop,
 } from "@triadica/touch-control";
 
-let ws = new WebSocket(`ws://${location.hostname}:6200`);
+const parsed = queryString.parse(location.search);
+
+let host = (parsed.host as string) || location.hostname;
+let port = parseInt((parsed.port as string) || "6200");
+
+let ws = new WebSocket(`ws://${host}:${port}`);
 let connected = false;
 
 ws.onopen = (event) => {
