@@ -44,9 +44,9 @@ let showData = (
   //   states.leftA,
   //   states.rightA
   // );
-  let target = document.querySelector("pre");
+  let target = document.querySelector("pre.log");
   if (target) {
-    target.innerText = JSON.stringify(
+    target.innerHTML = JSON.stringify(
       { states: states, delta: delta },
       null,
       2
@@ -85,6 +85,11 @@ let main = () => {
     }
     showData(elapsed, states, delta);
   });
+
+  console.log("hash:", __COMMIT_HASH__);
+  document.querySelector(".hash")!.innerHTML = __COMMIT_HASH__;
 };
 
 main();
+
+declare const __COMMIT_HASH__: string;
