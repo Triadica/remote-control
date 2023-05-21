@@ -65,6 +65,7 @@ let allZero = (xs: number[]): boolean => {
 let main = () => {
   renderControl();
   startControlLoop(10, (elapsed, states, delta) => {
+    showData(elapsed, states, delta);
     if (connected) {
       if (
         allZero(delta.leftMove) &&
@@ -83,7 +84,6 @@ let main = () => {
         })
       );
     }
-    showData(elapsed, states, delta);
   });
 
   console.log("hash:", __COMMIT_HASH__);
