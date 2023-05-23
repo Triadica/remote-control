@@ -1,10 +1,16 @@
+import queryString from "query-string";
 import {
   type ControlStates,
   renderControl,
   startControlLoop,
 } from "@triadica/touch-control";
 
-let ws = new WebSocket(`ws://${location.hostname}:6200`);
+const parsed = queryString.parse(location.search);
+
+let host = (parsed.host as string) || location.hostname;
+let port = parseInt((parsed.port as string) || "6200");
+
+let ws = new WebSocket(`ws://${host}:${port}`);
 let connected = false;
 
 ws.onopen = (event) => {
@@ -38,9 +44,9 @@ let showData = (
   //   states.leftA,
   //   states.rightA
   // );
-  let target = document.querySelector("pre");
+  let target = document.querySelector("pre.log");
   if (target) {
-    target.innerText = JSON.stringify(
+    target.innerHTML = JSON.stringify(
       { states: states, delta: delta },
       null,
       2
@@ -48,10 +54,27 @@ let showData = (
   }
 };
 
+let allZero = (xs: number[]): boolean => {
+  for (let idx = 0; idx < xs.length; idx++) {
+    if (xs[idx] !== 0) {
+      return false;
+    }
+  }
+  return true;
+};
 let main = () => {
   renderControl();
   startControlLoop(10, (elapsed, states, delta) => {
+    showData(elapsed, states, delta);
     if (connected) {
+      if (
+        allZero(delta.leftMove) &&
+        allZero(delta.rightMove) &&
+        allZero(states.leftMove) &&
+        allZero(states.rightMove)
+      ) {
+        return;
+      }
       ws.send(
         JSON.stringify({
           action: "control",
@@ -61,8 +84,12 @@ let main = () => {
         })
       );
     }
-    showData(elapsed, states, delta);
   });
+
+  console.log("hash:", __COMMIT_HASH__);
+  document.querySelector(".hash")!.innerHTML = __COMMIT_HASH__;
 };
 
 main();
+
+declare const __COMMIT_HASH__: string;

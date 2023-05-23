@@ -5,9 +5,30 @@ body {
   margin: 0;
   overscroll-behavior-y: none;
   overscroll-behavior-x: none;
+  background-color: hsl(0, 0%, 10%);
+  padding: 40px;
+  color: hsl(0, 0%, 36%);
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 
 body * {
   flex-shrink: 0;
   box-sizing: border-box;
+}
+
+div.touch-control .circle-button {
+  background-color:  hsla(350, 100%, 90%, 0.6);
+}
+div.touch-control .hand-center {
+  background-color:  hsla(350, 100%, 90%, 0.6);
+}
+div.touch-control .right-group {
+  right: 200px;
+}
+div.touch-control .left-group {
+  left: 200px;
+}
+div.left-group,
+div.right-group {
+  bottom: 500px;
 }
