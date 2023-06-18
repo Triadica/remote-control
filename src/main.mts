@@ -88,6 +88,23 @@ let main = () => {
 
   console.log("hash:", __COMMIT_HASH__);
   document.querySelector(".hash")!.innerHTML = __COMMIT_HASH__;
+
+  document.querySelector(".toggle")?.addEventListener("click", () => {
+    ws.send(
+      JSON.stringify({
+        action: "button",
+        button: "toogle",
+      })
+    );
+  });
+  document.querySelector(".switch")?.addEventListener("click", () => {
+    ws.send(
+      JSON.stringify({
+        action: "button",
+        button: "switch",
+      })
+    );
+  });
 };
 
 main();
