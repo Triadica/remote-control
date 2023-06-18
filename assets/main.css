@@ -30,5 +30,29 @@ div.touch-control .left-group {
 }
 div.left-group,
 div.right-group {
-  bottom: 500px;
+  bottom: 480px;
+}
+
+.tools {
+  margin-bottom: 20px;
+  position: absolute;
+  bottom: 60px;
+  left: 80px;
+}
+
+.tools button {
+  font-family: Josefin Sans, Arial, Helvetica, sans-serif;
+  background-color: hsl(0, 0%, 70%);
+  border-radius: 4px;
+  border: none;
+  padding: 8px 12px;
+  margin-right: 12px;
+  font-size: 20px;
+  transition-duration: 120ms;
+}
+
+
+.tools button:active {
+  transform: scale(1.1);
+  transition-duration: 40ms;
 }

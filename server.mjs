@@ -18,7 +18,7 @@ wss.on("connection", function connection(ws) {
       // mark client as sender
       ws.controlSender = true;
       console.log("sender declared");
-    } else if (op.action === "control") {
+    } else if (op.action === "control" || op.action === "button") {
       // console.log("control clients:", wss.clients.size);
       wss.clients.forEach((client) => {
         if (client !== ws && !client.controlSender) {
