@@ -56,3 +56,13 @@ div.right-group {
   transform: scale(1.1);
   transition-duration: 40ms;
 }
+
+.status-text {
+  position: absolute;
+  right: 24px;
+  top: 24px;
+}
+
+.status {
+  font-size: 24px;
+}
