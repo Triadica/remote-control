@@ -10,25 +10,32 @@ const parsed = queryString.parse(location.search);
 let host = (parsed.host as string) || location.hostname;
 let port = parseInt((parsed.port as string) || "6200");
 
-let ws = new WebSocket(`ws://${host}:${port}`);
 let connected = false;
 
-ws.onopen = (event) => {
-  connected = true;
+let ws: WebSocket;
 
-  ws.send(JSON.stringify({ action: "sender" }));
-};
+let connect = () => {
+  ws = new WebSocket(`ws://${host}:${port}`);
 
-ws.onclose = (event) => {
-  connected = false;
-};
+  ws.onopen = (event) => {
+    connected = true;
+    document.querySelector(".status")!.innerHTML = "On";
 
-ws.onerror = (error) => {
-  console.error("error", error);
-};
+    ws.send(JSON.stringify({ action: "sender" }));
+  };
 
-ws.onmessage = (event) => {
-  console.log("message event");
+  ws.onclose = (event) => {
+    connected = false;
+    document.querySelector(".status")!.innerHTML = "Off";
+  };
+
+  ws.onerror = (error) => {
+    console.error("error", error);
+  };
+
+  ws.onmessage = (event) => {
+    console.log("message event");
+  };
 };
 
 let showData = (
@@ -63,6 +70,7 @@ let allZero = (xs: number[]): boolean => {
   return true;
 };
 let main = () => {
+  connect();
   renderControl();
   startControlLoop(10, (elapsed, states, delta) => {
     showData(elapsed, states, delta);
@@ -104,6 +112,14 @@ let main = () => {
         button: "switch",
       })
     );
+  });
+
+  window.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "visible") {
+      if (!connected) {
+        connect();
+      }
+    }
   });
 };
 
