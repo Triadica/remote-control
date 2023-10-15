@@ -9,6 +9,7 @@ const parsed = queryString.parse(location.search);
 
 let host = (parsed.host as string) || location.hostname;
 let port = parseInt((parsed.port as string) || "6200");
+let disableRaf = parsed["disable-raf"] === "true";
 
 let connected = false;
 
@@ -72,27 +73,31 @@ let allZero = (xs: number[]): boolean => {
 let main = () => {
   connect();
   renderControl();
-  startControlLoop(10, (elapsed, states, delta) => {
-    showData(elapsed, states, delta);
-    if (connected) {
-      if (
-        allZero(delta.leftMove) &&
-        allZero(delta.rightMove) &&
-        allZero(states.leftMove) &&
-        allZero(states.rightMove)
-      ) {
-        return;
+  startControlLoop(
+    10,
+    (elapsed, states, delta) => {
+      showData(elapsed, states, delta);
+      if (connected) {
+        if (
+          allZero(delta.leftMove) &&
+          allZero(delta.rightMove) &&
+          allZero(states.leftMove) &&
+          allZero(states.rightMove)
+        ) {
+          return;
+        }
+        ws.send(
+          JSON.stringify({
+            action: "control",
+            elapsed,
+            states,
+            delta,
+          })
+        );
       }
-      ws.send(
-        JSON.stringify({
-          action: "control",
-          elapsed,
-          states,
-          delta,
-        })
-      );
-    }
-  });
+    },
+    { disableRaf }
+  );
 
   console.log("hash:", __COMMIT_HASH__);
   document.querySelector(".hash")!.innerHTML = __COMMIT_HASH__;

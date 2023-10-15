@@ -10,7 +10,7 @@
     "rcontrol": "./server.mjs"
   },
   "devDependencies": {
-    "@triadica/touch-control": "^0.0.3",
+    "@triadica/touch-control": "^0.0.4-a1",
     "@types/ws": "^8.5.5",
     "git-describe": "^4.1.1",
     "query-string": "^8.1.0",
