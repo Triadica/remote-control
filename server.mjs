@@ -4,7 +4,11 @@ import { WebSocketServer } from "ws";
 
 let port = parseInt(process.env.PORT || "6200");
 
+let verbose = process.env.verbose;
+
 const wss = new WebSocketServer({ port, host: "0.0.0.0" });
+
+let lastTime = Date.now();
 
 wss.on("connection", function connection(ws) {
   console.log(`new connection. (${wss.clients.size})`);
@@ -19,7 +23,11 @@ wss.on("connection", function connection(ws) {
       ws.controlSender = true;
       console.log("sender declared");
     } else if (op.action === "control" || op.action === "button") {
-      // console.log("control clients:", wss.clients.size);
+      let now = Date.now();
+      if (verbose === "true") {
+        console.debug("control time delta:", now - lastTime);
+      }
+      lastTime = now;
       wss.clients.forEach((client) => {
         if (client !== ws && !client.controlSender) {
           client.send(s);
