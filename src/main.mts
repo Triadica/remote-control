@@ -118,6 +118,11 @@ let main = () => {
       })
     );
   });
+  document.querySelector(".status-text")?.addEventListener("click", () => {
+    if (!connected) {
+      connect();
+    }
+  });
 
   window.addEventListener("visibilitychange", () => {
     if (document.visibilityState === "visible") {
